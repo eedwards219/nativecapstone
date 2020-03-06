@@ -1,5 +1,5 @@
 import { Header, Card } from "react-native-elements";
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -10,12 +10,22 @@ import {
   ScrollView,
   ImageBackground
 } from "react-native";
+import { connect } from "react-redux";
+import { fetchAllDrivers } from "../store/drivers/actions";
+import { fetchAllPassengers } from "../store/passengers/actions";
+import { fetchAllRides } from "../store/rides/actions";
 
 // onClickListener = viewId => {
 //   Alert.alert("Alert", "Button pressed " + viewId);
 // };
 
-export default function Profile() {
+function Profile(props) {
+  useEffect(() => {
+    props.fetchAllRides();
+    props.fetchAllDrivers();
+    props.fetchAllPassengers();
+  }, []);
+  console.log("drivers", props.drivers);
   return (
     <ScrollView style={styles.view}>
       <Header
@@ -106,12 +116,6 @@ export default function Profile() {
     </ScrollView>
   );
 }
-
-// export default class ProfileCardView extends Component {
-
-//   constructor(props) {
-//     super(props);
-//   }
 
 const styles = StyleSheet.create({
   view: { flex: 1 },
@@ -237,3 +241,13 @@ const styles = StyleSheet.create({
     color: "#FFFFFF"
   }
 });
+const mapStateToProps = state => {
+  return {
+    drivers: state.drivers.all.filter(driver => driver.id)
+  };
+};
+export default connect(mapStateToProps, {
+  fetchAllRides,
+  fetchAllDrivers,
+  fetchAllPassengers
+})(Profile);

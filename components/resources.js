@@ -21,7 +21,7 @@ export default function Resources() {
         source={require("../assets/unnamed.jpg")}
         style={{ width: "100%", height: "100%" }}
       >
-        <Card title="Registered?" image={require("../assets/unnamed.jpg")}>
+        <Card title="Registered?" image={require("../assets/p07snhjs.jpg")}>
           <Text style={{ marginBottom: 10 }}>
             If you're unsure if you're registered to vote, use this link to
             check:
@@ -42,7 +42,7 @@ export default function Resources() {
         </Card>
         <Card
           title="Are you an undecided voter?"
-          image={require("../assets/unnamed.jpg")}
+          image={require("../assets/960x0.jpg")}
         >
           <Text style={{ marginBottom: 10 }}>
             See which American political parties, candidates, and ballot

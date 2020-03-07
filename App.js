@@ -1,92 +1,154 @@
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import Home from "./components/home";
-import Profile from "./components/profile";
-import Resources from "./components/resources";
-import { NavigationContainer } from "@react-navigation/native";
+import React, { useState, useEffect } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  ImageBackground,
+  ScrollView
+} from "react-native";
+import { Card, ListItem, Button, Icon, Header } from "react-native-elements";
+import { Linking } from "expo";
+import AuthStack from "./components/authStack";
+import AppStack from "./components/appStack";
 import { connect, Provider } from "react-redux";
 import store from "./store/index";
-import { MaterialCommunityIcons } from "react-native-vector-icons";
+import { createAppContainer, createSwitchNavigator } from "react-navigation";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import SignUpToggle from "./components/SignUpToggle";
+import SignUp from "./components/signUp";
+import SignIn from "./components/signIn";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import { fetchAllDrivers } from "./store/drivers/actions";
+import { fetchAllPassengers } from "./store/passengers/actions";
+import { fetchAllRides } from "./store/rides/actions";
 
-// export default function App() {
-//   return <AppContainer />;
-// }
+let TheDecider = props => {
+  const Stack = createStackNavigator();
+  const Drawer = createDrawerNavigator();
+  useEffect(() => {
+    props.fetchAllRides();
+    props.fetchAllDrivers();
+    props.fetchAllPassengers();
+  }, []);
+  console.log("liu", props.loggedInUser);
 
-const Tab = createBottomTabNavigator();
-
-export default function App() {
   return (
-    <Provider store={store}>
-      <NavigationContainer>
-        <Tab.Navigator>
-          <Tab.Screen
-            name="Home"
-            component={Home}
-            options={{
-              tabBarLabel: "Home",
-              tabBarIcon: () => (
-                <MaterialCommunityIcons name="home" color="#808080" size={24} />
-              )
-            }}
-          />
-          <Tab.Screen
-            name="Profile"
-            component={Profile}
-            options={{
-              tabBarLabel: "Profile",
-              tabBarIcon: () => (
-                <MaterialCommunityIcons
-                  name="account"
-                  color="#808080"
-                  size={24}
-                />
-              )
-            }}
-          />
-          <Tab.Screen
-            name="Resources"
-            component={Resources}
-            options={{
-              tabBarLabel: "Resources",
-              tabBarIcon: () => (
-                <MaterialCommunityIcons
-                  name="book-open"
-                  color="#808080"
-                  size={24}
-                />
-              )
-            }}
-          />
-        </Tab.Navigator>
-      </NavigationContainer>
-    </Provider>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="SignUp/In"
+          component={SignUpToggle}
+          options={{
+            title: "WELCOME",
+            headerStyle: {
+              backgroundColor: "#1f89dc"
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold"
+            }
+          }}
+        />
+        <Stack.Screen
+          name="SignUp"
+          component={SignUp}
+          options={{
+            title: "SIGN UP",
+            headerStyle: {
+              backgroundColor: "#1f89dc"
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold"
+            }
+          }}
+        />
+        <Stack.Screen
+          name="SignIn"
+          component={SignIn}
+          options={{
+            title: "SIGN IN",
+            headerStyle: {
+              backgroundColor: "#1f89dc"
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold"
+            }
+          }}
+        />
+        <Stack.Screen
+          name="AuthStack"
+          component={AuthStack}
+          options={{
+            title: "My home",
+            headerStyle: {
+              backgroundColor: "#1f89dc"
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold"
+            }
+          }}
+        />
+        <Stack.Screen
+          name="AppStack"
+          component={AppStack}
+          options={{
+            title: "HOME",
+            headerStyle: {
+              backgroundColor: "#1f89dc"
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold"
+            }
+          }}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
-}
-// const AppContainer = createAppContainer(AppNavigator);
-
-// const AppNavigator = createBottomTabNavigator(
-//   {
-//     Home: {
-//       screen: Home
-//     },
-//     Profile: {
-//       screen: Profile
-//     },
-//     Resources: {
-//       screen: Resources
-//     }
-//   },
-//   {
-//     initialRouteName: "Home"
+};
+//   let theStack = props.loggedInUser ? <AppStack /> : <AuthStack />;
+//   if (props.loggedInUser) {
+//     return <AppStack />;
+//   } else {
+//     return <AuthStack />;
 //   }
-// );
+//   return theStack;
+// };
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: "#fff",
-//     alignItems: "center",
-//     justifyContent: "center"
+TheDecider = connect(mapStateToProps, {
+  fetchAllRides,
+  fetchAllDrivers,
+  fetchAllPassengers
+})(TheDecider);
+
+const mapStateToProps = state => {
+  return {
+    loggedInUser: state.auth.loggedInUser
+  };
+};
+const App = () => (
+  <Provider store={store}>
+    <TheDecider />
+  </Provider>
+);
+
+// let App = createSwitchNavigator({
+//   Auth: {
+//     screen: AuthStack
+//   },
+//   App: {
+//     screen: AppStack
 //   }
 // });
+export default App; // App = createAppContainer(App);
+// console.log("app", App);
+// let ConnectedApp = () => (
+//   <Provider store={store}>
+//     <App />
+//   </Provider>
+// );
+// export default ConnectedApp();

@@ -17,23 +17,24 @@ import {
 import { connect } from "react-redux";
 
 import { Linking } from "expo";
-import { fetchAllDrivers } from "../store/drivers/actions";
-import { fetchAllPassengers } from "../store/passengers/actions";
-import { fetchAllRides } from "../store/rides/actions";
+// import { fetchAllDrivers } from "../store/drivers/actions";
+// import { fetchAllPassengers } from "../store/passengers/actions";
+// import { fetchAllRides } from "../store/rides/actions";
 
 function Home(props) {
-  useEffect(() => {
-    props.fetchAllRides();
-    props.fetchAllDrivers();
-    props.fetchAllPassengers();
-  }, []);
+  //   useEffect(() => {
+  //     props.fetchAllRides();
+  //     props.fetchAllDrivers();
+  //     props.fetchAllPassengers();
+  //   }, []);
+
   return (
     <ScrollView style={styles.view}>
-      <Header
+      {/* <Header
         leftComponent={{ icon: "menu", color: "#fff" }}
         centerComponent={{ text: "HOME", style: { color: "#fff" } }}
         rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      /> */}
       <ImageBackground
         source={require("../assets/unnamed.jpg")}
         style={{ width: "100%", height: "100%" }}
@@ -79,7 +80,7 @@ function Home(props) {
               marginBottom: 0
             }}
             title="CLICK HERE"
-            onPress={() => navigation.navigate("Profile")}
+            onPress={() => props.navigation.navigate("Profile")}
           />
         </Card>
         <Card
@@ -165,8 +166,4 @@ const styles = StyleSheet.create({
           />
         </Card> */
 }
-export default connect(null, {
-  fetchAllRides,
-  fetchAllDrivers,
-  fetchAllPassengers
-})(Home);
+export default connect()(Home);

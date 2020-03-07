@@ -12,11 +12,11 @@ import { Linking } from "expo";
 export default function Resources() {
   return (
     <ScrollView style={styles.view}>
-      <Header
+      {/* <Header
         leftComponent={{ icon: "menu", color: "#fff" }}
         centerComponent={{ text: "RESOURCES", style: { color: "#fff" } }}
         rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      /> */}
       <ImageBackground
         source={require("../assets/unnamed.jpg")}
         style={{ width: "100%", height: "100%" }}

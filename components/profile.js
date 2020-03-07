@@ -20,19 +20,19 @@ import { fetchAllRides } from "../store/rides/actions";
 // };
 
 function Profile(props) {
-  useEffect(() => {
-    props.fetchAllRides();
-    props.fetchAllDrivers();
-    props.fetchAllPassengers();
-  }, []);
+  //   useEffect(() => {
+  //     props.fetchAllRides();
+  //     props.fetchAllDrivers();
+  //     props.fetchAllPassengers();
+  //   }, []);
   console.log("drivers", props.drivers);
   return (
     <ScrollView style={styles.view}>
-      <Header
+      {/* <Header
         leftComponent={{ icon: "menu", color: "#fff" }}
         centerComponent={{ text: "PROFILE", style: { color: "#fff" } }}
         rightComponent={{ icon: "home", color: "#fff" }}
-      />
+      /> */}
       <ImageBackground
         source={require("../assets/unnamed.jpg")}
         style={{ width: "100%", height: "100%" }}
@@ -47,9 +47,11 @@ function Profile(props) {
                 }}
               />
 
-              <Text style={styles.name}>John Doe </Text>
-              <Text style={styles.userInfo}>jhonnydoe@mail.com </Text>
-              <Text style={styles.userInfo}>Florida </Text>
+              <Text style={styles.name}>{props.loggedInUser.name}</Text>
+              <Text style={styles.userInfo}>{props.loggedInUser.email} </Text>
+              <Text style={styles.userInfo}>
+                {props.loggedInUser.phoneNumber}
+              </Text>
             </View>
           </View>
 
@@ -242,12 +244,11 @@ const styles = StyleSheet.create({
   }
 });
 const mapStateToProps = state => {
+  console.log("state", state.drivers.all);
   return {
-    drivers: state.drivers.all.filter(driver => driver.id)
+    drivers: state.drivers.all.filter(driver => driver.id),
+    loggedInUser: state.auth.loggedInUser,
+    rides: state.rides.all
   };
 };
-export default connect(mapStateToProps, {
-  fetchAllRides,
-  fetchAllDrivers,
-  fetchAllPassengers
-})(Profile);
+export default connect(mapStateToProps)(Profile);

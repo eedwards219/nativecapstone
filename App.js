@@ -18,6 +18,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import SignUpToggle from "./components/SignUpToggle";
 import SignUp from "./components/signUp";
 import SignIn from "./components/signIn";
+import UpdateProfile from "./components/updateProfile";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { fetchAllDrivers } from "./store/drivers/actions";
 import { fetchAllPassengers } from "./store/passengers/actions";
@@ -97,6 +98,20 @@ let TheDecider = props => {
           component={AppStack}
           options={{
             title: "HOME",
+            headerStyle: {
+              backgroundColor: "#1f89dc"
+            },
+            headerTintColor: "#fff",
+            headerTitleStyle: {
+              fontWeight: "bold"
+            }
+          }}
+        />
+        <Stack.Screen
+          name="UpdateProfile"
+          component={UpdateProfile}
+          options={{
+            title: "UpdateProfile",
             headerStyle: {
               backgroundColor: "#1f89dc"
             },

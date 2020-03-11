@@ -1,5 +1,6 @@
 const initialState = {
   loggedInUser: {
+    id: 1,
     name: "Rhodes Mcconnell",
     email: "Terrell@Howard.com",
     phoneNumber: 2517612593,

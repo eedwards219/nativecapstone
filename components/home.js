@@ -27,6 +27,11 @@ function Home(props) {
   //     props.fetchAllDrivers();
   //     props.fetchAllPassengers();
   //   }, []);
+  let matcher = props.passengers.filter(
+    match => match.isAvailable === props.loggedInUser.isAvailable
+  );
+  console.log("test", matcher);
+  console.log("homeprops", props);
 
   return (
     <ScrollView style={styles.view}>
@@ -94,7 +99,7 @@ function Home(props) {
             type="font-awesome"
             size={150}
             color="#2089DC"
-            onPress={() => console.log("hello")}
+            onPress={() => props.navigation.navigate("Profile")}
           />
           <Text style={{ marginBottom: 10 }}>
             See which American political parties, candidates, and ballot
@@ -109,61 +114,12 @@ function Home(props) {
 const styles = StyleSheet.create({
   view: { flex: 1 }
 });
-
-{
-  /* <Card
-          title="Getting Started"
-          image={require("../assets/355-3554387_create-digital-profile-icon-blue-profile-icon-png.png")}
-        >
-          {/* <Icon
-            raised
-            name="compass"
-            size={150}
-            type="font-awesome"
-            color="#f50"
-            onPress={() => console.log("hello")}
-          />
-          <Button
-            // icon={<Icon name="code" color="#ffffff" />}
-            buttonStyle={{
-              borderRadius: 0,
-              marginLeft: 0,
-              marginRight: 0,
-              marginBottom: 0
-            }}
-            title="STEP 1:
-            CLICK HERE TO CHECK YOUR VOTER REGISTRATION STATUS"
-            onPress={() =>
-              Linking.openURL("https://www.vote.org/am-i-registered-to-vote")
-            }
-          />
-          <Button
-            // icon={<Icon name="code" color="#ffffff" />}
-            buttonStyle={{
-              borderRadius: 0,
-              marginLeft: 0,
-              marginRight: 0,
-              marginBottom: 0
-            }}
-            title="STEP 1:
-            CLICK HERE TO CHECK YOUR PROFILE INFO"
-            onPress={() => navigation.navigate("Profile")}
-          />
-          {/* <Image source={{ uri: image }}></Image> 
-          <Text style={{ marginBottom: 10 }}>
-            When you are ready to get picked up, click the button below to be
-            matched with a driver. onPress=
-            {() => navigation.navigate("Profile")}
-          </Text>
-          <Icon
-            raised
-            name="compass"
-            // color="#ffffff"
-            type="font-awesome"
-            size={150}
-            color="#2089DC"
-            onPress={() => console.log("hello")}
-          />
-        </Card> */
-}
-export default connect()(Home);
+const mapStateToProps = state => {
+  return {
+    drivers: state.drivers.all.filter(driver => driver.id),
+    loggedInUser: state.auth.loggedInUser,
+    rides: state.rides.all,
+    passengers: state.passengers.all
+  };
+};
+export default connect(mapStateToProps)(Home);

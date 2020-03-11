@@ -1,4 +1,4 @@
-import { Header, Card } from "react-native-elements";
+import { Header, Card, Button, Icon, ListItem } from "react-native-elements";
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
@@ -14,17 +14,25 @@ import { connect } from "react-redux";
 import { fetchAllDrivers } from "../store/drivers/actions";
 import { fetchAllPassengers } from "../store/passengers/actions";
 import { fetchAllRides } from "../store/rides/actions";
+import RidesListItem from "./ridesListItem";
+import { matcher } from "./home";
 
 // onClickListener = viewId => {
 //   Alert.alert("Alert", "Button pressed " + viewId);
 // };
 
+//   return (
+//     <div>
+//       <h4>Your Friends</h4>
+//       <ListGroup>{listOfConversations}</ListGroup>;
+//     </div>
+//   );
+
 function Profile(props) {
-  //   useEffect(() => {
-  //     props.fetchAllRides();
-  //     props.fetchAllDrivers();
-  //     props.fetchAllPassengers();
-  //   }, []);
+  console.log("matcher", matcher);
+  let matcher = props.passengers.filter(
+    match => match.isAvailable === props.loggedInUser.isAvailable
+  );
   console.log("drivers", props.drivers);
   return (
     <ScrollView style={styles.view}>
@@ -52,67 +60,32 @@ function Profile(props) {
               <Text style={styles.userInfo}>
                 {props.loggedInUser.phoneNumber}
               </Text>
+              <Button
+                icon={<Icon name="code" color="#ffffff" />}
+                buttonStyle={{
+                  borderRadius: 0,
+                  marginLeft: 0,
+                  marginRight: 0,
+                  marginBottom: 0
+                }}
+                title="UPDATE PROFILE"
+                onPress={() => props.navigation.navigate("UpdateProfile")}
+              />
             </View>
           </View>
-
-          <View style={styles.body}>
-            <View style={styles.item}>
-              <View style={styles.iconContent}>
-                <Image
-                  style={styles.icon}
-                  source={{
-                    uri: "https://png.icons8.com/home/win8/50/ffffff"
-                  }}
-                />
-              </View>
-              <View style={styles.infoContent}>
-                <Text style={styles.info}>Home</Text>
-              </View>
-            </View>
-
-            <View style={styles.item}>
-              <View style={styles.iconContent}>
-                <Image
-                  style={styles.icon}
-                  source={{
-                    uri: "https://png.icons8.com/settings/win8/50/ffffff"
-                  }}
-                />
-              </View>
-              <View style={styles.infoContent}>
-                <Text style={styles.info}>Settings</Text>
-              </View>
-            </View>
-
-            <View style={styles.item}>
-              <View style={styles.iconContent}>
-                <Image
-                  style={styles.icon}
-                  source={{
-                    uri: "https://png.icons8.com/news/win8/50/ffffff"
-                  }}
-                />
-              </View>
-              <View style={styles.infoContent}>
-                <Text style={styles.info}>News</Text>
-              </View>
-            </View>
-
-            <View style={styles.item}>
-              <View style={styles.iconContent}>
-                <Image
-                  style={styles.icon}
-                  source={{
-                    uri:
-                      "https://png.icons8.com/shopping-basket/ios11/50/ffffff"
-                  }}
-                />
-              </View>
-              <View style={styles.infoContent}>
-                <Text style={styles.info}>Shop</Text>
-              </View>
-            </View>
-          </View>
+        </View>
+        <View>
+          {matcher
+            // .filter(passenger => passenger.id === props.loggedInUser.id)
+            .map((l, i) => (
+              <ListItem
+                key={i}
+                leftAvatar={{ source: { uri: l.avatar_url } }}
+                title={l.name}
+                //   subtitle={l.subtitle}
+                bottomDivider
+              />
+            ))}
         </View>
       </ImageBackground>
     </ScrollView>
@@ -248,7 +221,8 @@ const mapStateToProps = state => {
   return {
     drivers: state.drivers.all.filter(driver => driver.id),
     loggedInUser: state.auth.loggedInUser,
-    rides: state.rides.all
+    rides: state.rides.all,
+    passengers: state.passengers.all
   };
 };
 export default connect(mapStateToProps)(Profile);

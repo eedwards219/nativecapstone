@@ -61,10 +61,12 @@ export default function Resources() {
             onPress={() => Linking.openURL("https://www.isidewith.com/")}
           />
         </Card>
-        <Card title="Registered?" image={require("../assets/unnamed.jpg")}>
+        <Card
+          title="Where is my polling location?"
+          image={require("../assets/unnamed.jpg")}
+        >
           <Text style={{ marginBottom: 10 }}>
-            If you're unsure if you're registered to vote, use this link to
-            check:
+            If you're unsure of your polling location, use this link to check:
           </Text>
           <Button
             icon={<Icon name="code" color="#ffffff" />}
@@ -74,9 +76,9 @@ export default function Resources() {
               marginRight: 0,
               marginBottom: 0
             }}
-            title="Check registration on vote.org"
+            title="Check polling location on vote.org"
             onPress={() =>
-              Linking.openURL("https://www.vote.org/am-i-registered-to-vote")
+              Linking.openURL("https://www.vote.org/polling-place-locator/")
             }
           />
         </Card>

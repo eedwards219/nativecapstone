@@ -16,6 +16,7 @@ import { fetchAllPassengers } from "../store/passengers/actions";
 import { fetchAllRides } from "../store/rides/actions";
 import RidesListItem from "./ridesListItem";
 import { matcher } from "./home";
+import faker from "faker";
 
 // onClickListener = viewId => {
 //   Alert.alert("Alert", "Button pressed " + viewId);
@@ -34,6 +35,8 @@ function Profile(props) {
     match => match.isAvailable === props.loggedInUser.isAvailable
   );
   console.log("drivers", props.drivers);
+  console.log("matcheddriver", props.matchedDriver);
+
   return (
     <ScrollView style={styles.view}>
       {/* <Header
@@ -51,7 +54,7 @@ function Profile(props) {
               <Image
                 style={styles.avatar}
                 source={{
-                  uri: "https://bootdey.com/img/Content/avatar/avatar6.png"
+                  uri: faker.image.avatar()
                 }}
               />
 
@@ -75,14 +78,33 @@ function Profile(props) {
           </View>
         </View>
         <View>
+          <Card>
+            <Image
+              style={{ borderRadius: "50%" }}
+              src={faker.image.avatar()}
+              alt=""
+              wrapped
+              ui={false}
+            />
+            <Text style={styles.name}>Your Driver is:</Text>
+            <Card style={styles.container}>
+              <Text style={styles.name}>Rosalie Cote</Text>
+              <Text style={styles.userInfo}>
+                Please contact them using either of the following:
+              </Text>
+              <Text style={styles.name}>Angelique@Holman.com</Text>
+              <Text style={styles.userInfo}>or</Text>
+              <Text style={styles.name}>2517612593</Text>
+            </Card>
+          </Card>
           {matcher
-            // .filter(passenger => passenger.id === props.loggedInUser.id)
+            .filter(passenger => passenger.id === props.loggedInUser.id)
             .map((l, i) => (
               <ListItem
                 key={i}
-                leftAvatar={{ source: { uri: l.avatar_url } }}
+                leftAvatar={{ source: { uri: faker.image.avatar() } }}
                 title={l.name}
-                //   subtitle={l.subtitle}
+                subtitle={l.phoneNumber}
                 bottomDivider
               />
             ))}
@@ -222,7 +244,8 @@ const mapStateToProps = state => {
     drivers: state.drivers.all.filter(driver => driver.id),
     loggedInUser: state.auth.loggedInUser,
     rides: state.rides.all,
-    passengers: state.passengers.all
+    passengers: state.passengers.all,
+    matchedDriver: state.drivers.all.find(matched => matched.id === [5])
   };
 };
 export default connect(mapStateToProps)(Profile);

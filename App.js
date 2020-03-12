@@ -33,7 +33,7 @@ let TheDecider = props => {
     props.fetchAllPassengers();
   }, []);
   console.log("liu", props.loggedInUser);
-
+  console.disableYellowBox = true;
   return (
     <NavigationContainer>
       <Stack.Navigator>
